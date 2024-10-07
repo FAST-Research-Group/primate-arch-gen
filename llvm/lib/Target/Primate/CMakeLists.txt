@@ -36,6 +36,7 @@ add_llvm_target(PrimateCodeGen
   PrimateInstrInfo.cpp
   PrimateInstructionSelector.cpp
   PrimateISelDAGToDAG.cpp
+  PrimateInsertBFUCall.cpp
   PrimateISelLowering.cpp
   PrimateLegalizerInfo.cpp
   PrimateMCInstLower.cpp

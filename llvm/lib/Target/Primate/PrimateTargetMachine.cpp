@@ -15,6 +15,7 @@
 #include "PrimateTargetMachine.h"
 #include "MCTargetDesc/PrimateBaseInfo.h"
 #include "Primate.h"
+#include "PrimateInsertBFUCall.h"
 #include "PrimateTargetObjectFile.h"
 #include "PrimateTargetTransformInfo.h"
 #include "PrimateGEPFilter.h"
@@ -202,6 +203,7 @@ void PrimatePassConfig::addIRPasses() {
 
 bool PrimatePassConfig::addInstSelector() {
   addPass(createPrimateISelDag(getPrimateTargetMachine(), getOptLevel()));
+  addPass(new PrimateInsertBFUCall());
 
   return false;
 }
