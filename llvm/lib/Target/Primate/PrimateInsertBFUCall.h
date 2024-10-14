@@ -17,44 +17,62 @@
 #include "Primate.h"
 #include "PrimateTargetMachine.h"
 #include "llvm/CodeGen/MachineFunctionPass.h"
+#include "llvm/CodeGen/SelectionDAGISel.h"
+#include "llvm/CodeGen/SwiftErrorValueTracking.h"
 #include "llvm/Pass.h"
 #include "llvm/Support/Debug.h"
 #include "llvm/Support/raw_ostream.h"
+#include "llvm/Target/TargetMachine.h"
 
 namespace llvm {
 
-// namespace {
-
 class PrimateInsertBFUCall : public MachineFunctionPass {
-  // const PrimateSubtarget *Subtarget = nullptr;
-
 public:
   static char ID;
 
-  // explicit 
-  PrimateInsertBFUCall() //(PrimateTargetMachine &TargetMachine)
-      : MachineFunctionPass(ID) {}
+  // TargetMachine &TM;
+  PrimateTargetMachine &TM;
+  // const TargetLibraryInfo *LibInfo;
+  // std::unique_ptr<FunctionLoweringInfo> FuncInfo;
+  // SwiftErrorValueTracking *SwiftError;
+  // // MachineFunction *MF;
+  // MachineRegisterInfo *RegInfo;
+  SelectionDAG *CurDAG;
+  // std::unique_ptr<SelectionDAGBuilder> SDB;
+  // AAResults *AA = nullptr;
+  // AssumptionCache *AC = nullptr;
+  // GCFunctionInfo *GFI = nullptr;
+  // CodeGenOptLevel OptLevel;
+  // const TargetInstrInfo *TII;
+  // const TargetLowering *TLI;
+  // bool FastISelFailed;
+  // SmallPtrSet<const Instruction *, 4> ElidedArgCopyInstrs;
+
+  explicit PrimateInsertBFUCall(PrimateTargetMachine &TargetMachine, 
+                                CodeGenOptLevel OL)
+      : MachineFunctionPass(ID), 
+        TM(TargetMachine),
+        CurDAG(new SelectionDAG(TargetMachine, OL)) //,
+//       SDB(std::make_unique<SelectionDAGBuilder>(*CurDAG, *FuncInfo, *SwiftError,
+//                                                 OL)),
+//       OptLevel(OL) {
+//   initializeGCModuleInfoPass(*PassRegistry::getPassRegistry());
+//   initializeBranchProbabilityInfoWrapperPassPass(
+//       *PassRegistry::getPassRegistry());
+//   initializeAAResultsWrapperPassPass(*PassRegistry::getPassRegistry());
+//   initializeTargetLibraryInfoWrapperPassPass(*PassRegistry::getPassRegistry());
+// }
+  {}
+
 
   StringRef getPassName() const override {
     return "Primate BFU Call Insertion";
   }
 
-  bool runOnMachineFunction(MachineFunction &MF) override {
-    llvm::dbgs() << "Hello from Primate BFU Call Insertion\n";
-    // Subtarget = &MF.getSubtarget<PrimateSubtarget>();
-    // return MachineFunctionPass::runOnMachineFunction(MF);
-    return false;
-  }
+  bool runOnMachineFunction(MachineFunction &MF) override;
   
-  void getAnalysisUsage(AnalysisUsage &AU) const override {
-    MachineFunctionPass::getAnalysisUsage(AU);
-  }
+  void getAnalysisUsage(AnalysisUsage &AU) const override;
 };
-
-
-// } // end anonymous namespace
-
-// char PrimateInsertBFUCall::ID = 0;
 
 } // namespace llvm
 
