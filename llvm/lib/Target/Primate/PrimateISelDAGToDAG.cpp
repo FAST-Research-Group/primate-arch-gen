@@ -50,18 +50,12 @@ namespace Primate {
 } // namespace llvm
 
 void PrimateDAGToDAGISel::PreprocessISelDAG() {
-  dbgs() << "Here in PreProcessISelDAG\n";
-  CurDAG->AssignTopologicalOrder();
-  CurDAG->dump();
-  
   for (SDNode &N : CurDAG->allnodes()) {
     SDLoc DL(&N);
     if (N.getOpcode() == PrimateISD::EXTRACT || N.getOpcode() == PrimateISD::INSERT ||
         N.getOpcode() == ISD::Constant) {
       continue;
     }
-
-    getSubgraph(&N, DL);
     // for(unsigned i = 0; i < N.getNumValues(); i++ ) {
     //   SDValue CurVal = SDValue(&N, i);
     //   if(CurVal.getValueType() == MVT::i32) {
@@ -115,10 +109,6 @@ bool PrimateDAGToDAGISel::selectSHXADD_UWOp(SDValue N, unsigned ShAmt,
 }
 
 void PrimateDAGToDAGISel::PostprocessISelDAG() {
-  dbgs() << "Here in PrimateDAGToDAGISel::PostprocessISelDAG()\n";
-
-  CurDAG->dump();
-
   doPeepholeLoadStoreADDI();
 }
 
@@ -277,7 +267,7 @@ void PrimateDAGToDAGISel::Select(SDNode *Node) {
     return;
   }
 
-  dbgs() << "Selecting nodes for: ";
+  dbgs() << "Selecting for node: ";
   Node->dump();
   dbgs() << "\n";
 

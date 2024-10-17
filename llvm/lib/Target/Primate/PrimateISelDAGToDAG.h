@@ -30,49 +30,8 @@ namespace llvm {
 class PrimateDAGToDAGISel : public SelectionDAGISel {
   const PrimateSubtarget *Subtarget = nullptr;
 
-  typedef struct {
-    SDNode *Pred, *Curr;
-    ArrayRef<SDUse> Succ;
-  } SubGraphNode_t;
-
-  typedef DenseMap<SDNode *, SubGraphNode_t*> PrimateSubGraph_t;
-
-  SmallVector<PrimateSubGraph_t> SubGraphs;
-
-
-  SubGraphNode_t *getSubgraphNode(SDNode *CurrNode, SDNode *PrevNode) {
-    
-  }
-
-  PrimateSubGraph_t *getSubgraph(SDNode *RootNode, SDLoc &DL) {
-    PrimateSubGraph_t *SubGraph = new PrimateSubGraph_t;
-    SDNode *PrevNode = nullptr;
-    SDNode *CurrNode = RootNode;
-    // SDNode *NextNode = nullptr;
-
-    // if(CurrNode->use_empty())
-    //   return nullptr;
-    
-    if(SDValue(CurrNode, 0).getValueType() == MVT::i32) {
-      dbgs() << "Current Node: ";
-      CurrNode->dump();
-      dbgs() << "Operation " << CurrNode->getOperationName() 
-             << " has "      << CurrNode->getNumOperands() << " OPs:\n";
-
-      for (const auto &OP : CurrNode->ops()) {
-        OP.getNode()->dump();
-      }
-      
-      SubGraphNode_t *NewNode = new SubGraphNode_t;
-      NewNode->Pred = PrevNode;
-      NewNode->Curr = CurrNode;
-      NewNode->Succ = CurrNode->ops();
-      
-      SubGraph->insert({CurrNode, NewNode});
-    }
-    dbgs() << "\n";
-    return nullptr;
-  }
+  SmallVector<SDNode *> MatchQueue; // next nodes for matching
+  unsigned tmp = 0;
 
 public:
   static char ID;

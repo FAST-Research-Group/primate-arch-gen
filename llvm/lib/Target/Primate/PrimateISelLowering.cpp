@@ -202,6 +202,7 @@ PrimateTargetLowering::PrimateTargetLowering(const TargetMachine &TM,
   if (Subtarget.is64Bit()) {
     setOperationAction(ISD::ADD, MVT::i32, Custom);
     setOperationAction(ISD::SUB, MVT::i32, Custom);
+    setOperationAction(ISD::MUL, MVT::i32, Custom);
     setOperationAction(ISD::SHL, MVT::i32, Custom);
     setOperationAction(ISD::SRA, MVT::i32, Custom);
     setOperationAction(ISD::SRL, MVT::i32, Custom);
@@ -213,13 +214,13 @@ PrimateTargetLowering::PrimateTargetLowering(const TargetMachine &TM,
   }
 
   if (!Subtarget.hasStdExtM()) {
-    setOperationAction(ISD::MUL, XLenVT, Expand);
-    setOperationAction(ISD::MULHS, XLenVT, Expand);
-    setOperationAction(ISD::MULHU, XLenVT, Expand);
-    setOperationAction(ISD::SDIV, XLenVT, Expand);
-    setOperationAction(ISD::UDIV, XLenVT, Expand);
-    setOperationAction(ISD::SREM, XLenVT, Expand);
-    setOperationAction(ISD::UREM, XLenVT, Expand);
+    // setOperationAction(ISD::MUL, XLenVT, Expand);
+    // setOperationAction(ISD::MULHS, XLenVT, Expand);
+    // setOperationAction(ISD::MULHU, XLenVT, Expand);
+    // setOperationAction(ISD::SDIV, XLenVT, Expand);
+    // setOperationAction(ISD::UDIV, XLenVT, Expand);
+    // setOperationAction(ISD::SREM, XLenVT, Expand);
+    // setOperationAction(ISD::UREM, XLenVT, Expand);
   } else {
     if (Subtarget.is64Bit()) {
       setOperationAction(ISD::MUL, MVT::i32, Custom);
